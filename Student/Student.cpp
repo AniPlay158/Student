@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <ctime>
 using namespace std;
 
@@ -104,6 +104,8 @@ public:
 /// </summary>
 class Student
 {
+	static int count_of_students;
+
 	string surname;
 	string name;
 	string patronymic;
@@ -127,8 +129,12 @@ class Student
 	}
 
 public:
+
+
 	Student(const Student& original)
 	{
+		
+
 		this->name = original.name;
 		this->surname = original.surname;
 		this->birthday = original.birthday;
@@ -291,6 +297,8 @@ public:
 
 	Student(string name, string surname, string patronymic, string adress, string phone_number)
 	{
+		
+
 		SetSurname(name);
 		SetName(surname);
 		SetPatronymic(patronymic);
@@ -305,6 +313,7 @@ public:
 	/// </summary>
 	~Student()
 	{
+
 		if (hometask_rates != nullptr)
 		{
 			delete[] hometask_rates;
@@ -536,18 +545,32 @@ public:
 
 };
 
+
+
+int Student::count_of_students = 0;
+
+
 /// <summary>
 /// creating a group
 /// </summary>
 class Group
 {
+	static int count_groups;
+
 	Student** students = nullptr; // 1) используется разреженный массив указателей вместо динамического массива объектов
 	int count_of_students = 0;
 	string name_group;
 	int number_course;
 	string specialization;
+	
 
 public:
+
+	unsigned int GetCount() const
+	{
+		return count_of_students;
+	}
+
 	Group()
 	{
 		SetNameGroup(name_group);
@@ -577,7 +600,9 @@ public:
 			{
 				delete students[i]; // 3) каждый объект в массиве объектов должен быть удалён по отдельности
 			}
-			delete[] students; // потом чистится память от всего массива (уже указателей, а не объектов)
+			delete[] students;
+			count_groups++;
+			cout << "Total count of groups: " << count_groups << "\n";// потом чистится память от всего массива (уже указателей, а не объектов)
 		}
 	}
 
@@ -780,7 +805,7 @@ public:
 				}
 			}
 		}
-
+	
 		for (int i = 0; i < count_of_students; i++)
 		{
 			cout << i + 1 << ") ";
@@ -792,6 +817,8 @@ public:
 
 string names[] = { "Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Hank", "Ivy", "Jack" };
 string surnames[] = { "Smith", "Johnson", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor", "Lewis", "Hill" };
+
+int Group::count_groups = 0;
 
 int main()
 {
@@ -816,7 +843,15 @@ int main()
 		group1.AddStudent(s);
 	}
 
+	cout << "Total count of students in group: " << group1.GetCount() << "\n";
+
 	group1.PrintAllStudents();
+
+	if (group1.GetCount() >= 7)
+	{
+		throw "ERROR!\n";
+	}
+
 
 	///////////////////////////////////////////////////
 
@@ -838,25 +873,33 @@ int main()
 		group2.AddStudent(s);
 	}
 
+	cout << "Total count of students in group: " << group2.GetCount() << "\n";
+	
+
 	group2.PrintAllStudents();
+
+	if (group2.GetCount() >= 7)
+	{
+		throw "ERROR!\n";
+	}
 
 	///////////////////////////////////////////////////
 
-	group1.RemoveStudentWithMinHomeworkAverage();
-	group1.PrintAllStudents();
-	cout << endl;
+	//group1.RemoveStudentWithMinHomeworkAverage();
+	//group1.PrintAllStudents();
+	//cout << endl;
 
-	group2.RemoveStudentWithMinHomeworkAverage();
-	group2.PrintAllStudents();
+	//group2.RemoveStudentWithMinHomeworkAverage();
+	//group2.PrintAllStudents();
 
-	///////////////////////////////////////////////////
+	/////////////////////////////////////////////////////
 
-	group1.RemoveStudentsWithFailedExams();
-	group1.PrintAllStudents();
-	cout << endl;
+	//group1.RemoveStudentsWithFailedExams();
+	//group1.PrintAllStudents();
+	//cout << endl;
 
-	group2.RemoveStudentsWithFailedExams();
-	group2.PrintAllStudents();
+	//group2.RemoveStudentsWithFailedExams();
+	//group2.PrintAllStudents();
 
 	/////////////////////////////////////////////////////
 
